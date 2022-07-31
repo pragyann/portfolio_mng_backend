@@ -53,6 +53,8 @@ const buyFromCompany = async (req, res) => {
 
     } catch (err) {
         await db.rollback();
+        db.release();
+
         return res.status(500).json({ message: 'An error occured.' });
     }
 }
@@ -107,6 +109,8 @@ const addToMarket = async (req, res) => {
         return res.status(200).json({ message: 'Stocks placed in market successfully.' });
     } catch (err) {
         await db.rollback();
+        db.release();
+
         return res.status(500).json({ message: 'An error occured.' });
     }
 }
@@ -186,6 +190,8 @@ const buyFromMarket = async (req, res) => {
 
     } catch (err) {
         await db.rollback();
+        db.release();
+
         return res.status(500).json({ message: 'An error occured.' });
     }
 }

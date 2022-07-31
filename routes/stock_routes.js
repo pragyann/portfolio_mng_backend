@@ -7,5 +7,6 @@ router.get('/company_stock', stockController.getCompanyStock)
 router.get('/market_stock', authenticate, stockController.getMarketStock)
 router.get('/user_stock', authenticate, stockController.getUserStock)
 router.get('/user_market_stock', authenticate, stockController.getUserMarketStock)
+router.post('/remove_from_market', authenticate, stockController.removeFromMarket)
 
 module.exports = router;

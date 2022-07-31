@@ -89,9 +89,52 @@ const getUserMarketStock = async (req, res) => {
     res.json({ data: result });
 }
 
+const removeFromMarket = async (req, res) => {
+    const { stock_id } = req.body;
+    const user_id = req.user.id;
+    const db = await pool.getConnection();
+    // check if empty
+    if (!stock_id) {
+        return res.send({ 'message': 'All fields are required.' });
+    }
+
+    try {
+        // check if present or not 
+        var getStockFromMarket = `SELECT * FROM stock_for_sale WHERE user_id = ${user_id} AND stock_id = ${stock_id}`;
+        var [stockFromMarket, _] = await db.query(getStockFromMarket);
+
+        if (stockFromMarket.length == 0) {
+            return res.status(403).json({ message: 'No such stock found.' });
+        }
+
+        const quantityForSale = stockFromMarket[0].quantity;
+
+        await db.beginTransaction();
+
+        // remove from stock_for_sale
+        var remove = `DELETE FROM stock_for_sale WHERE user_id = ${user_id} AND stock_id = ${stock_id}`;
+        await db.query(remove);
+
+        // increment usable qty in user_stock
+        var increment = `UPDATE user_stock SET usable_qty = usable_qty + ${quantityForSale} WHERE user_id = ${user_id} AND stock_id = ${stock_id}`;
+        await db.query(increment);
+
+        await db.commit();
+
+        db.release();
+
+        return res.send({ 'message': 'Stock removed from market successfully.' });
+
+    } catch (e) {
+        db.release();
+        return res.status(500).send({ 'message': e.toString() });
+    }
+}
+
 module.exports = {
     getCompanyStock,
     getMarketStock,
     getUserStock,
-    getUserMarketStock
+    getUserMarketStock,
+    removeFromMarket
 };

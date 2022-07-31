@@ -40,9 +40,8 @@ const signup = async (req, res) => {
 
             // generating token
             const token = jwt.sign(data, jwt_secret);
-            data.token = token;
 
-            return res.json({ message: 'Sign up successfull.', data: data });
+            return res.json({ message: 'Sign up successfull.', data: token });
         }).catch(err => console.log(err));
 
         db.release();
@@ -83,8 +82,8 @@ const login = async (req, res) => {
 
                 // generating token
                 const token = jwt.sign(data, jwt_secret);
-                data.token = token;
-                return res.status(200).json({ message: 'Log in succesfull.', data: data });
+
+                return res.status(200).json({ message: 'Log in succesfull.', data: token });
             }).catch(err => {
                 return res.status(200).json({ message: err.toString() });
             });
