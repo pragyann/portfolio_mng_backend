@@ -6,5 +6,6 @@ const stockController = require('../controllers/stock_controller');
 router.get('/company_stock', stockController.getCompanyStock)
 router.get('/market_stock', authenticate, stockController.getMarketStock)
 router.get('/user_stock', authenticate, stockController.getUserStock)
+router.get('/user_market_stock', authenticate, stockController.getUserMarketStock)
 
 module.exports = router;

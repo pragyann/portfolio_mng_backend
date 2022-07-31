@@ -5,10 +5,10 @@ const stockRoutes = require('./routes/stock_routes');
 const transactionRoutes = require('./routes/transaction_routes');
 const app = express();
 
-db.connect((err) => {
-    if (err) throw err;
-    console.log('Connected to MySQL');
-});
+// db.connect((err) => {
+//     if (err) throw err;
+//     console.log('Connected to MySQL');
+// });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

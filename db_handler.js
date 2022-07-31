@@ -2,6 +2,7 @@ const mysql = require('mysql2');
 require('dotenv').config();
 const { dbKeys } = require('./keys');
 
-const db = mysql.createConnection(dbKeys);
+const pool = mysql.createPool(dbKeys);
 
-module.exports = db;
+
+module.exports = pool.promise();
